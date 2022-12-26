@@ -14,6 +14,10 @@ void Mainfunc() {
         if (Command == 1) {
             Graph<int> graph;
             cin >> graph;
+        } else if (Command == 2) {
+
+        } else if (Command == 9) {
+            Test();
         }
     }
 }

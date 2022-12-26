@@ -1,14 +1,17 @@
 #include <iostream>
 #include <vector>
+
 #pragma once
 
 using namespace std;
 
-// todo-Alexander написать граф и конструкторы
-// todo-Alexander написать считывание и вывод графа
+// todo-Alexander написать перегрузку оператора [] для класса Graph
 
-template <class T>
-class Edge{
+
+//граф ориентированный
+
+template<class T>
+class Edge {
 private:
     int NumberOfVertexFrom;
     int NumberOfVertexTo;
@@ -31,12 +34,16 @@ public:
     int GetNumberOfVertexTo() {
         return this->NumberOfVertexTo;
     }
+
+    T GetWeight() {
+        return this->Weight;
+    }
 };
 
-template <class T>
+template<class T>
 class Vertex {
 private:
-    int NumberOfElement;
+    int NumberOfElement = 0;
     vector<Edge<T>> IncedentArray;
 public:
     Vertex() {
@@ -47,9 +54,32 @@ public:
         this->IncedentArray.push_back(Ed);
     }
 
-    int GetIncedentArraySize() {
+    int GetIncedentArrayLength() {
         return this->IncedentArray.size();
     }
+
+    int GetNumberOfElement() {
+        return this->NumberOfElement;
+    }
+
+    Edge<T> Get(int index) {
+        return this->IncedentArray[index];
+    }
+
+    void Print() {
+        cout << "this edge starts in vertex number: ";
+        cout << this->GetNumberOfVertexFrom();
+        cout << "\n";
+        cout << "this edge ends in vertex number: ";
+        cout << this->GetNumberOfVertexTo();
+        cout << "and has weight: ";
+        cout << this->GetWeight();
+    }
+
+    void SetNumberOfElement(int NumberOfElement) {
+        this->NumberOfElement = NumberOfElement;
+    }
+
 };
 
 template<class T>
@@ -64,16 +94,44 @@ public:
     Graph(int CountOfVertex) {
         VertexArray.clear();
         VertexArray = vector<Vertex<T>>(CountOfVertex);
+        for (int i = 0; i < CountOfVertex; i++) {
+            this->Get(i).SetNumberOfElement(i);
+        }
     }
 
     void Push_back(int NumberOfVertex, Edge<T> Ed) {
-        this->VertexArray[NumberOfVertex].Push_back(Ed);
+        Get(NumberOfVertex).Push_back(Ed);
+    }
+
+    int GetLength() {
+        return this->VertexArray.size();
+    }
+
+    Vertex<T> Get(int index) {
+
+        return this->VertexArray[index];
+    }
+
+    Vertex<T>& GetVertex(int index) {
+        //cout << this->VertexArray[index];
+        return &this->VertexArray[index];
+    }
+
+    void Print() {
+        cout << "Vertex number ";
+        cout << this->GetNumberOfElement();
+        cout << " has ";
+        cout << this->GetIncedentArrayLength();
+        cout << " incident edges\n";
+        for (int i = 0; i < this->GetIncedentArrayLength(); i++) {
+            this->Get(i).Print();
+        }
     }
 
 };
 
 template<typename T>
-istream& operator >>(istream& in, Edge<T> &Ed) {
+istream &operator>>(istream &in, Edge<T> &Ed) {
     cout << "From which vertex does this edge originate?\n";
     int NumberOfVertexFrom;
     in >> NumberOfVertexFrom;
@@ -88,7 +146,7 @@ istream& operator >>(istream& in, Edge<T> &Ed) {
 }
 
 template<typename T>
-istream& operator >>(istream& in, Graph<T> &Gr) {
+istream &operator>>(istream &in, Graph<T> &Gr) {
     cout << "How much vertex in graph?\n";
     int CountOfVertex;
     in >> CountOfVertex;
@@ -105,7 +163,38 @@ istream& operator >>(istream& in, Graph<T> &Gr) {
 }
 
 template<typename T>
-ostream& operator <<(ostream &out, Edge<T> &Ed) {
-    out << "this edge start in vertex number: ";
-    out << Ed.GetNumberOfVertexFrom()
+ostream &operator<<(ostream &out, Edge<T> &Ed) {
+    out << "this edge starts in vertex number: ";
+    out << Ed.GetNumberOfVertexFrom();
+    out << "\n";
+    out << "this edge ends in vertex number: ";
+    out << Ed.GetNumberOfVertexTo();
+    out << "and has weight: ";
+    out << Ed.GetWeight();
+    return out;
 }
+
+template<typename T>
+ostream &operator<<(ostream &out, Vertex<T> Ve) {
+    out << "Vertex number ";
+    out << Ve.GetNumberOfElement();
+    out << " has ";
+    out << Ve.GetIncedentArrayLength();
+    out << " incident edges\n";
+    for (int i = 0; i < Ve.GetIncedentArrayLength(); i++) {
+        Ve.Get(i).Print();
+    }
+    return out;
+}
+
+template<typename T>
+ostream &operator<<(ostream &out, Graph<T> Gr) {
+    out << "this graph has ";
+    out << Gr.GetLength();
+    out << " vertex\n";
+    for (int i = 0; i < Gr.GetLength(); i++) {
+        out << Gr.Get(i);
+    }
+    return out;
+}
+
