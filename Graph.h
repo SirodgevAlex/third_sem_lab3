@@ -78,6 +78,7 @@ public:
 
     void SetNumberOfElement(int NumberOfElement) {
         this->NumberOfElement = NumberOfElement;
+        cout << this->NumberOfElement << '\n';
     }
 
 };
@@ -92,15 +93,16 @@ public:
     }
 
     Graph(int CountOfVertex) {
-        VertexArray.clear();
-        VertexArray = vector<Vertex<T>>(CountOfVertex);
+        this->VertexArray.clear();
+        this->VertexArray = vector<Vertex<T>>(CountOfVertex);
         for (int i = 0; i < CountOfVertex; i++) {
-            this->Get(i).SetNumberOfElement(i);
+            Get(i).SetNumberOfElement(i);
+            cout << Get(i).GetNumberOfElement() << '\n';
         }
     }
 
     void Push_back(int NumberOfVertex, Edge<T> Ed) {
-        Get(NumberOfVertex).Push_back(Ed);
+        this->Get(NumberOfVertex).Push_back(Ed);
     }
 
     int GetLength() {
@@ -108,13 +110,12 @@ public:
     }
 
     Vertex<T> Get(int index) {
-
         return this->VertexArray[index];
     }
 
     Vertex<T>& GetVertex(int index) {
         //cout << this->VertexArray[index];
-        return &this->VertexArray[index];
+        return *this->VertexArray[index];
     }
 
     void Print() {
@@ -197,4 +198,14 @@ ostream &operator<<(ostream &out, Graph<T> Gr) {
     }
     return out;
 }
+
+template<typename T>
+bool operator ==(Edge<T> Ed1, Edge<T> Ed2) {
+    if (Ed1.GetNumberOfVertexFrom() != Ed2.GetNumberOfVertexFrom()) return false;
+    if (Ed1.GetNumberOfVertexTo() != Ed1.GetNumberOfVertexTo()) return false;
+    if (Ed1.GetWeight() != Ed2.GetWeight()) return false;
+    return true;
+}
+
+
 
