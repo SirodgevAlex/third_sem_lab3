@@ -13,12 +13,18 @@ using namespace std;
 template<class T>
 class Edge {
 private:
-    int NumberOfVertexFrom;
-    int NumberOfVertexTo;
+    int NumberOfVertexFrom = 0;
+    int NumberOfVertexTo = 0;
     T Weight = 0;
 public:
     Edge() {
 
+    }
+
+    Edge(int NumberOfVertexFrom, int NumberOfVertexTo, T Weight) {
+        this->NumberOfVertexFrom = NumberOfVertexFrom;
+        this->NumberOfVertexTo = NumberOfVertexTo;
+        this->Weight = Weight;
     }
 
     void Set(int NumberOfVertexFrom, int NumberOfVertexTo, T Weight) {
@@ -38,6 +44,16 @@ public:
     T GetWeight() {
         return this->Weight;
     }
+
+    void Print() {
+        cout << "this edge starts in vertex number: ";
+        cout << GetNumberOfVertexFrom();
+        cout << "\n";
+        cout << "this edge ends in vertex number: ";
+        cout << GetNumberOfVertexTo() << '\n';
+        cout << "and has weight: ";
+        cout << GetWeight() << '\n';
+    }
 };
 
 template<class T>
@@ -51,7 +67,10 @@ public:
     }
 
     void Push_back(Edge<T> Ed) {
+        cout << IncedentArray.size() << ' ';
         this->IncedentArray.push_back(Ed);
+        cout << IncedentArray.size() << '\n';
+        Get(0).Print();
     }
 
     int GetIncedentArrayLength() {
@@ -66,19 +85,20 @@ public:
         return this->IncedentArray[index];
     }
 
-    void Print() {
-        cout << "this edge starts in vertex number: ";
-        cout << this->GetNumberOfVertexFrom();
-        cout << "\n";
-        cout << "this edge ends in vertex number: ";
-        cout << this->GetNumberOfVertexTo();
-        cout << "and has weight: ";
-        cout << this->GetWeight();
-    }
 
     void SetNumberOfElement(int NumberOfElement) {
         this->NumberOfElement = NumberOfElement;
-        cout << this->NumberOfElement << '\n';
+    }
+
+    void Print() {
+        cout << "Vertex number ";
+        cout << GetNumberOfElement();
+        cout << " has ";
+        cout << GetIncedentArrayLength();
+        cout << " incident edges\n";
+        for (int i = 0; i < GetIncedentArrayLength(); i++) {
+            Get(i).Print();
+        }
     }
 
 };
@@ -96,12 +116,12 @@ public:
         this->VertexArray.clear();
         this->VertexArray = vector<Vertex<T>>(CountOfVertex);
         for (int i = 0; i < CountOfVertex; i++) {
-            Get(i).SetNumberOfElement(i);
-            cout << Get(i).GetNumberOfElement() << '\n';
+            this->VertexArray[i].SetNumberOfElement(i);
         }
     }
 
-    void Push_back(int NumberOfVertex, Edge<T> Ed) {
+    void Push_back(Edge<T> Ed) {
+        int NumberOfVertex = Ed.GetNumberOfVertexFrom();
         this->Get(NumberOfVertex).Push_back(Ed);
     }
 
@@ -111,22 +131,6 @@ public:
 
     Vertex<T> Get(int index) {
         return this->VertexArray[index];
-    }
-
-    Vertex<T>& GetVertex(int index) {
-        //cout << this->VertexArray[index];
-        return *this->VertexArray[index];
-    }
-
-    void Print() {
-        cout << "Vertex number ";
-        cout << this->GetNumberOfElement();
-        cout << " has ";
-        cout << this->GetIncedentArrayLength();
-        cout << " incident edges\n";
-        for (int i = 0; i < this->GetIncedentArrayLength(); i++) {
-            this->Get(i).Print();
-        }
     }
 
 };
@@ -158,8 +162,8 @@ istream &operator>>(istream &in, Graph<T> &Gr) {
     for (int i = 0; i < CountOfEdges; i++) {
         Edge<T> Ed;
         cin >> Ed;
-        Gr.Push_back(Ed.GetNumberOfVertexFrom(), Ed);
-        Gr.Push_back(Ed.GetNumberOfVertexTo(), Ed);
+        Gr.Push_back(Ed);
+        //Gr.Push_back(Ed.GetNumberOfVertexTo(), Ed);
     }
 }
 
@@ -183,7 +187,8 @@ ostream &operator<<(ostream &out, Vertex<T> Ve) {
     out << Ve.GetIncedentArrayLength();
     out << " incident edges\n";
     for (int i = 0; i < Ve.GetIncedentArrayLength(); i++) {
-        Ve.Get(i).Print();
+        Edge<T> Ed = Ve.Get(index);
+        Ed.Print();
     }
     return out;
 }
