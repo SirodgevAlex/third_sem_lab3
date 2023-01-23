@@ -1,9 +1,12 @@
 #include <iostream>
 #include "Graph.h"
 #include "assert.h"
+#include "GraphFunctions.h"
+#include <termcolor/termcolor.hpp>
 
 #pragma once
 
+using namespace std;
 
 void TestEdgeConstuctor() {
     Edge<int> edge = Edge<int>();
@@ -114,7 +117,8 @@ void TestGraphPush_back() {
 
 }
 
-void TestGraphGetTheLeastWeightDistance() {
+void TestGraphFunctionsGetTheLeastWeightDistance() {
+    GraphFunctions<double> GrFunctions;
     Graph<double> graph = Graph<double>(5);
     Edge<double> edge = Edge<double>(0, 1, 1);
     graph.Push_back(edge);
@@ -124,7 +128,7 @@ void TestGraphGetTheLeastWeightDistance() {
     graph.Push_back(edge);
     edge.Set(2, 3, 5);
     graph.Push_back(edge);
-    vector<double> answer = graph.GetTheLeastWeightDistance(0);
+    vector<double> answer = GrFunctions.GetTheLeastWeightDistance(graph, 0);
     assert(answer[0] == 0);
     assert(answer[1] == 1);
     assert(answer[2] == 2);
@@ -132,7 +136,8 @@ void TestGraphGetTheLeastWeightDistance() {
     assert(answer[4] == 1000000000);
 }
 
-void TestGraphColorTheGraph() {
+void TestGraphFunctionsColorTheGraph() {
+    GraphFunctions<int> GrFunctions;
     Graph<int> graph = Graph<int>(5);
     Edge<int> edge = Edge<int>(0, 1, 1);
     graph.Push_back(edge);
@@ -142,15 +147,103 @@ void TestGraphColorTheGraph() {
     graph.Push_back(edge);
     edge.Set(2, 3, 5);
     graph.Push_back(edge);
-    vector<int> answer = graph.ColorTheGraph();
-    assert(answer[0] == 0);
-    assert(answer[1] == 1);
-    assert(answer[2] == 1);
-    assert(answer[3] == 0);
-    assert(answer[4] == 0);
+    edge.Set(0, 3, 6);
+    graph.Push_back(edge);
+    Colors colors = GrFunctions.ColorTheGraph(graph);
+    //cout << colors;
+    assert(colors[0] == 0);
+    assert(colors[1] == 1);
+    assert(colors[2] == 1);
+    assert(colors[3] == 2);
+    assert(colors[4] == 0);
 }
 
-void TestGraphMinStableTree() {
+void Test2GraphFunctionsColorTheGraph() {
+    GraphFunctions<int> GrFunctions;
+    Graph<int> graph = Graph<int>(9);
+    Edge<int> edge = Edge<int>(0, 1, 1);
+    graph.Push_back(edge);
+    edge.Set(0, 2, 2);
+    graph.Push_back(edge);
+    edge.Set(0, 3, 4);
+    graph.Push_back(edge);
+    edge.Set(0, 4, 5);
+    graph.Push_back(edge);
+    edge.Set(0, 5, 6);
+    graph.Push_back(edge);
+    edge.Set(0, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(0, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(0, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(1, 2, 2);
+    graph.Push_back(edge);
+    edge.Set(1, 3, 4);
+    graph.Push_back(edge);
+    edge.Set(1, 4, 5);
+    graph.Push_back(edge);
+    edge.Set(1, 5, 6);
+    graph.Push_back(edge);
+    edge.Set(1, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(1, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(1, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(2, 3, 4);
+    graph.Push_back(edge);
+    edge.Set(2, 4, 5);
+    graph.Push_back(edge);
+    edge.Set(2, 5, 6);
+    graph.Push_back(edge);
+    edge.Set(2, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(2, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(2, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(3, 4, 5);
+    graph.Push_back(edge);
+    edge.Set(3, 5, 6);
+    graph.Push_back(edge);
+    edge.Set(3, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(3, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(3, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(4, 5, 6);
+    graph.Push_back(edge);
+    edge.Set(4, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(4, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(4, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(5, 6, 5);
+    graph.Push_back(edge);
+    edge.Set(5, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(5, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(6, 7, 6);
+    graph.Push_back(edge);
+    edge.Set(6, 8, 5);
+    graph.Push_back(edge);
+    edge.Set(7, 8, 5);
+    graph.Push_back(edge);
+    Colors colors = GrFunctions.ColorTheGraph(graph);
+    cout << colors;
+//    assert(colors[0] == 0);
+//    assert(colors[1] == 1);
+//    assert(colors[2] == 1);
+//    assert(colors[3] == 2);
+//    assert(colors[4] == 0);
+}
+
+void TestGraphFunctionsMinStableTree() {
+    GraphFunctions<int> GrFunctions;
     Graph<int> graph = Graph<int>(5);
     Edge<int> edge = Edge<int>(0, 1, 1);
     graph.Push_back(edge);
@@ -160,7 +253,7 @@ void TestGraphMinStableTree() {
     graph.Push_back(edge);
     edge.Set(2, 3, 5);
     graph.Push_back(edge);
-    vector<Edge<int>> answer = graph.MinStableTree();
+    vector<Edge<int>> answer = GrFunctions.MinStableTree(graph);
     edge.Set(0, 1, 1);
     assert(answer[0] == edge);
     edge.Set(0, 2, 2);
@@ -171,7 +264,8 @@ void TestGraphMinStableTree() {
     assert(answer[3] == edge);
 }
 
-void TestGraphFindComponents() {
+void TestGraphFunctionsFindComponents() {
+    GraphFunctions<int> GrFunctions;
     Graph<int> graph = Graph<int>(5);
     Edge<int> edge = Edge<int>(0, 1, 1);
     graph.Push_back(edge);
@@ -181,7 +275,7 @@ void TestGraphFindComponents() {
     graph.Push_back(edge);
     edge.Set(2, 3, 5);
     graph.Push_back(edge);
-    vector<vector<int>> answer = graph.FindConnectedComponents();
+    vector<vector<int>> answer = GrFunctions.FindConnectedComponents(graph);
     assert(answer[0][0] == 0);
     assert(answer[0][1] == 1);
     assert(answer[0][2] == 2);
@@ -189,7 +283,8 @@ void TestGraphFindComponents() {
     assert(answer[1][0] == 4);
 }
 
-void TestFindGraphStrongConnectedComponents() {
+void TestFindGraphFunctionsStrongConnectedComponents() {
+    GraphFunctions<int> GrFunctions;
     Graph<int> graph = Graph<int>(8);
     Edge<int> edge = Edge<int>(0, 1, 1);
     graph.Push_back(edge);
@@ -208,7 +303,7 @@ void TestFindGraphStrongConnectedComponents() {
     edge.Set(6, 4, 5);
     graph.Push_back(edge);
 
-    graph.FindStrongConnectedComponentsAnswer();
+    GrFunctions.FindStrongConnectedComponentsAnswer(graph);
 }
 
 void Test() {
@@ -228,7 +323,7 @@ void Test() {
     cout << "   Push_back() and Get() for Vertex work correct\n";
     TestVertexHiddenPush_back();
     cout << "   HiddenPush_back() for Vertex works correct\n";
-    cout << "\e[1;93m " << "FOR GRAPH : << "\e[0m";
+    cout << "\e[1;93mFOR GRAPH : \e[0m";
     cout << '\n';
     TestGraphConstrutors();
     cout << "   All constructors, Get() and GetLength() for Graph work correct\n";
@@ -236,14 +331,16 @@ void Test() {
     cout << "   GetLength() for Graph works correct\n";
     TestGraphPush_back();
     cout << "   Push_back() for Graph works correct\n";
-    TestGraphGetTheLeastWeightDistance();
-    cout << "   GetTheLeaseWeightDistance() for Graph works correct\n";
-    TestGraphColorTheGraph();
-    cout << "   ColorTheGraph() for Graph works correct\n";
-    TestGraphMinStableTree();
-    cout << "   MinStableTree() for Graph works correct\n";
-    TestGraphFindComponents();
-    cout << "   FindConnectedComponents() for Graph works correct\n";
-    //TestFindGraphStrongConnectedComponents();
-    cout << "   FindStrongConnectedComponents() for Graph works correct\n";
+    cout << termcolor::yellow << "FOR GRAPH FUNCTIONS: \n" << termcolor::reset;
+    TestGraphFunctionsGetTheLeastWeightDistance();
+    cout << "   GetTheLeaseWeightDistance() for GraphFunctions works correct\n";
+    TestGraphFunctionsColorTheGraph();
+    Test2GraphFunctionsColorTheGraph();
+    cout << "   ColorTheGraph() for GraphFunctions works correct\n";
+    TestGraphFunctionsMinStableTree();
+    cout << "   MinStableTree() for GraphFunctions works correct\n";
+    TestGraphFunctionsFindComponents();
+    cout << "   FindConnectedComponents() for GraphFunctions works correct\n";
+    //TestFindFunctionsGraphStrongConnectedComponents();
+    cout << "   FindStrongConnectedComponents() for GraphFunctions works correct\n";
 }
